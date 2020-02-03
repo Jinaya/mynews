@@ -7,6 +7,10 @@ use App\Http\Controllers\Controller;
 
 use App\Profile;
 
+use App\Profile_history;
+
+use Carbon\Carbon;
+
 class ProfileController extends Controller
 {
   public function add(){
@@ -50,7 +54,12 @@ class ProfileController extends Controller
     $profile->fill($form)->save();
     
     // 更新した結果を確認できるようにプロフィール編集画面に遷移
-    return view('admin.profile.edit', ['profile' => $profile]);
+    $profile_history = new Profile_History;
+    $profile_history->profile_id = $profile->id;
+    $profile_history->edited_at = Carbon::now();
+    $profile_history->save();
+
+    return redirect('admin/profile/create');
   }
 }
 
