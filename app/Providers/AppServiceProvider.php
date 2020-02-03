@@ -25,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
     {
         // if(request()->isSecure()){
         //     \URL::forceScheme('https');
-        // }
+        if (\App::environment('production')) {
+        \URL::forceScheme('https');
+        }
     }
 }
